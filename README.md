@@ -1,2 +1,2 @@
-# Data Structures & Algorithms by Neetcode
+# Data Structures & Algorithms
  
