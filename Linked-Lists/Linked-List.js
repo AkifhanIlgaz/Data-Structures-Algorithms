@@ -5,45 +5,137 @@ class ListNode {
   }
 }
 
-class LinkedList {
+class MyLinkedList {
   constructor() {
-    // We use dummyNode
-    this.head = new ListNode(-1);
+    this.head = null;
     this.tail = this.head;
+    this.length = 0;
   }
 
-  // O(1)
-  insertEnd(val) {
+  /**
+   * @param {number} index
+   * @return {number}
+   */
+  get(index) {
+    if (this.head && index < this.length) {
+      let current = this.head;
+      let count = 0;
+      while (count !== index) {
+        current = current.next;
+        count++;
+      }
+      return current.val;
+    }
+    return -1;
+  }
+
+  /**
+   * @param {number} val
+   * @return {void}
+   */
+  addAtHead(val) {
+    this.length++;
     const newNode = new ListNode(val);
-    this.tail.next = newNode;
-    this.tail = newNode;
+    if (this.head) {
+      newNode.next = this.head;
+      this.head = newNode;
+      return;
+    }
+    this.head = this.tail = newNode;
   }
 
-  // O(n)
-  remove(index) {
-    let i = 0;
-    let curr = this.head;
+  /**
+   * @param {number} val
+   * @return {void}
+   */
+  addAtTail(val) {
+    this.length++;
+    const newNode = new ListNode(val);
 
-    // Find the preceding one node
-    while (i < index && curr.next != null) {
-      i++;
-      curr = curr.next;
+    if (this.tail) {
+      this.tail.next = newNode;
+      this.tail = newNode;
+      return;
     }
 
-    // Remove the node
-    if (curr !== null) {
-      curr.next = curr.next.next;
+    this.tail = this.head = newNode;
+  }
+
+  /**
+   * @param {number} index
+   * @param {number} val
+   * @return {void}
+   */
+  addAtIndex(index, val) {
+    if (index > this.length) {
+      return;
+    }
+    if (index == this.length) {
+      return this.addAtTail(val);
+    }
+    if (index == 0) {
+      return this.addAtHead(val);
+    }
+
+    this.length++;
+    const newNode = new ListNode(val);
+
+    let prev = this.head;
+    let count = 0;
+    while (count !== index - 1) {
+      prev = prev.next;
+      count++;
+    }
+
+    newNode.next = prev.next;
+    prev.next = newNode;
+  }
+
+  /**
+   * @param {number} index
+   * @return {void}
+   */
+
+  deleteAtIndex(index) {
+    if (index >= this.length) {
+      return;
+    }
+
+    if (index == 0) {
+      return this.deleteFromHead();
+    }
+
+    if (index == this.length - 1) {
+      return this.deleteFromEnd();
+    }
+    this.length--;
+    let prev = null;
+    let current = this.head;
+    for (let i = 0; i < index; i++) {
+      prev = current;
+      current = current.next;
+    }
+
+    prev.next = current.next;
+  }
+
+  deleteFromHead() {
+    if (this.head) {
+      this.head = this.head.next;
+      this.length--;
     }
   }
 
-  print() {
-    let s = "";
-    let curr = this.head.next;
+  deleteFromEnd() {
+    if (this.tail) {
+      let current = this.head;
+      while (current.next !== this.tail) {
+        current = current.next;
+      }
 
-    while (curr) {
-      s += curr.val + "->";
-      curr = curr.next;
+      this.tail = current;
+      this.tail.next = null;
+      this.length--;
     }
-    console.log(s);
   }
 }
