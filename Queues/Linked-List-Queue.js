@@ -1,20 +1,18 @@
-class Queue {
+class MyQueue {
   constructor() {
-    this.start = null;
-    this.end = null;
+    this.head = null;
+    this.tail = null;
     this.size = 0;
   }
 
   enqueue(val) {
     const newNode = new ListNode(val);
 
-    if (this.size) {
-      // Queue is not empty
-      this.end.next = newNode;
-      this.end = this.end.next;
+    if (!this.size) {
+      this.head = this.tail = newNode;
     } else {
-      // Queue is empty
-      this.start = this.end = newNode;
+      this.tail.next = newNode;
+      this.tail = newNode;
     }
 
     this.size++;
@@ -22,22 +20,17 @@ class Queue {
 
   dequeue() {
     if (!this.size) {
-      // Queue is empty
       return null;
     }
 
-    const value = this.start.val;
-    this.start = this.start.next;
-
-    if (this.start == null) {
-      // Queue has become empty
-      this.end = null;
-    }
-
-    return value;
+    let node = this.head;
+    this.head = this.head.next;
+    node.next = null;
+    this.size--;
+    return node.val;
   }
   peek() {
-    return this.start.val;
+    return this.head.val;
   }
 
   empty() {
@@ -45,7 +38,7 @@ class Queue {
   }
 
   print() {
-    let current = this.start;
+    let current = this.head;
     let s = "";
     while (current) {
       s += current.val + "=>";
