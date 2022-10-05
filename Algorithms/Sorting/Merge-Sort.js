@@ -1,75 +1,50 @@
 /**
  *
- * @param {Number[]} arr
- * @param {Number} left
- * @param {Number} right
+ * @param {Number[]} nums
  */
-const mergeSort = (arr, left, right) => {
-  if (left < right) {
-    // Find the middle point of arr
-    let middle = Math.floor((right - left) / 2);
-
-    mergeSort(arr, left, middle); // Sort left half
-    mergeSort(arr, middle + 1, right); // Sort right half
-    merge(arr, left, middle, right); // Merge sorted halfs
+const mergeSort = (nums) => {
+  let size = nums.length;
+  // Base case
+  // If array has only one element, it is considered sorted
+  // There is nothing to compare with
+  if (size == 1) {
+    return nums;
   }
 
-  return arr;
+  // Split up into two parts
+  let middle = Math.floor(size / 2);
+  let leftArray = nums.slice(0, middle);
+  let rightArray = nums.slice(middle);
+
+  // Split up each part by recursively calling mergeSort()
+  mergeSort(leftArray);
+  mergeSort(rightArray);
+
+  // After mergeSort() functions are finished, merge them
+  merge();
 };
+
 /**
  *
- * @param {Number[]} arr
- * @param {Number} left
- * @param {Number} middle
- * @param {Number} right
- * Merges two subarrays of arr
- * First Half => [left..middle]
- * Second Half => [middle+1..right]
+ * @param {Number[]} leftArray
+ * @param {Number[]} rightArray
+ * @param {Number[]} array
  */
-const merge = (arr, left, middle, right) => {
-  // Find lengths of sub-arrays
-  let length1 = middle - left + 1;
-  let length2 = right - middle;
+const merge = (leftArray, rightArray, array) => {
+  let index = 0;
 
-  // Create temp arrays
-  let L = new Array(length1);
-  let R = new Array(length2);
-
-  // Copy the sorted left & right halfs to the temp arrays
-  for (let i = 0; i < length1; i++) {
-    L[i] = arr[left + i];
-  }
-  for (let i = 0; i < length1; i++) {
-    R[i] = arr[middle + i + 1];
-  }
-
-  // initial indexes of left and right sub-arrays
-  let i = 0; // index for left
-  let j = 0; // index for right
-  let k = left; // Initial index of merged subarray array
-
-  // Merge two halfs to the original array
-  while (i < length1 && j < length2) {
-    if (L[i] <= R[j]) {
-      arr[k] = L[i];
-      i++;
+  while (leftArray.length && rightArray.length) {
+    if (leftArray[0] < rightArray[0]) {
+      array[index++] = leftArray.shift();
     } else {
-      arr[k] = R[j];
-      j++;
+      array[index++] = rightArray.shift();
     }
-    k++;
   }
 
-  // One of the halfs have elements remaining
-  while (i < length1) {
-    arr[k] = L[i];
-    k++;
-    i++;
+  while (leftArray.length) {
+    array[index++] = leftArray.shift();
   }
-
-  while (j < length2) {
-    arr[k] = R[j];
-    k++;
-    j++;
+  while (rightArray.length) {
+    array[index++] = rightArray.shift();
   }
 };
