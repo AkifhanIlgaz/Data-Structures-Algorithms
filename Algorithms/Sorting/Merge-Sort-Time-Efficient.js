@@ -1,3 +1,7 @@
+const sortArray = (nums) => {
+  return mergeSort(nums, 0, nums.length - 1);
+};
+
 const mergeSort = (arr, left, right) => {
   if (left < right) {
     // Base case
