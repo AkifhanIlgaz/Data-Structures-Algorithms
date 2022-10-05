@@ -21,7 +21,9 @@ const mergeSort = (nums) => {
   mergeSort(rightArray);
 
   // After mergeSort() functions are finished, merge them
-  merge();
+  merge(leftArray, rightArray, nums);
+
+  return nums;
 };
 
 /**
